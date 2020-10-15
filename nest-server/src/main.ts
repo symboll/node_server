@@ -1,12 +1,14 @@
 import { NestFactory } from '@nestjs/core';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+const port = 3000
 
 async function bootstrap() {
+
   const app = await NestFactory.create(AppModule);
 
-  app.useGlobalPipes(new ValidationPipe())
+  app.useGlobalPipes(new ValidationPipe() )
 
   const options = new DocumentBuilder()
     .setTitle('Posts example')
@@ -16,6 +18,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api-docs', app, document);
 
-  await app.listen(3000);
+  await app.listen(port);
+  console.log(`http://localhost:${port}/api-docs`)
 }
 bootstrap();

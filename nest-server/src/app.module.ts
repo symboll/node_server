@@ -3,13 +3,15 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PostsModule } from './posts/posts.module';
 import { TypegooseModule } from 'nestjs-typegoose'
+
 @Module({
   imports: [
-    TypegooseModule.forRoot("mongodb://127.0.0.1:27017/melon", {
-      useNewUrlParser: true,
+    TypegooseModule.forRoot('mongodb://127.0.0.1:27017/melon',{
+      useNewUrlParser: true, 
+      useUnifiedTopology: true,
+      useFindAndModify: false
     }),
-    PostsModule
-  ],
+    PostsModule],
   controllers: [AppController],
   providers: [AppService],
 })

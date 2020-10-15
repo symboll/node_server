@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PostsModule } from './posts/posts.module';
 import { TypegooseModule } from 'nestjs-typegoose'
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -11,7 +12,8 @@ import { TypegooseModule } from 'nestjs-typegoose'
       useUnifiedTopology: true,
       useFindAndModify: false
     }),
-    PostsModule],
+    PostsModule,
+    UsersModule],
   controllers: [AppController],
   providers: [AppService],
 })

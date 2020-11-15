@@ -101,13 +101,12 @@
         "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-watcher/config/locales",
         "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-schedule/config/locales",
         "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-multipart/config/locales",
+        "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-development/config/locales",
         "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-logrotator/config/locales",
         "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-static/config/locales",
         "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-view/config/locales",
-        "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-view-nunjucks/config/locales",
-        "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-mock/config/locales",
+        "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-mysql/config/locales",
         "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/locales",
-        "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-mock/lib/tmp/config/locales",
         "/Users/likanghua/node_pro/node_pro/egg_server/config/locales"
       ],
       "queryField": "locale",
@@ -148,6 +147,14 @@
         "cron": "0 30 4 * * *"
       }
     },
+    "development": {
+      "watchDirs": [],
+      "ignoreDirs": [],
+      "fastReady": false,
+      "reloadOnDebug": true,
+      "overrideDefault": false,
+      "overrideIgnore": false
+    },
     "logrotator": {
       "filesRotateByHour": null,
       "hourDelimiter": "-",
@@ -166,26 +173,30 @@
       "maxFiles": 1000
     },
     "view": {
-      "root": [
-        "/Users/likanghua/node_pro/node_pro/egg_server/app/view"
-      ],
-      "cache": true,
+      "root": "/Users/likanghua/node_pro/node_pro/egg_server/app/view",
+      "cache": false,
       "defaultExtension": ".html",
-      "defaultViewEngine": "nunjucks",
-      "mapping": {
-        ".tpl": "nunjucks"
+      "defaultViewEngine": "",
+      "mapping": {}
+    },
+    "mysql": {
+      "default": {
+        "database": null,
+        "connectionLimit": 5
+      },
+      "app": true,
+      "agent": false,
+      "client": {
+        "host": "127.0.0.1",
+        "port": 3306,
+        "user": "root",
+        "password": "<String len: 11>",
+        "database": "basic"
       }
     },
-    "nunjucks": {
-      "autoescape": true,
-      "throwOnUndefined": false,
-      "trimBlocks": false,
-      "lstripBlocks": false,
-      "cache": true
-    },
-    "env": "unittest",
+    "env": "local",
     "name": "egg_server",
-    "keys": "<String len: 3>",
+    "keys": "<String len: 29>",
     "cookies": {},
     "proxy": false,
     "maxIpsCount": 0,
@@ -197,22 +208,48 @@
       "name": "egg_server",
       "version": "1.0.0",
       "description": "",
-      "main": "index.js",
-      "scripts": {
-        "test": "egg-bin test",
-        "dev": "egg-bin dev"
+      "private": true,
+      "egg": {
+        "declarations": true
       },
-      "keywords": [],
-      "author": "",
-      "license": "ISC",
       "dependencies": {
-        "egg": "^2.29.1",
-        "egg-view-nunjucks": "^2.2.0"
+        "egg": "^2.15.1",
+        "egg-mysql": "^3.0.0",
+        "egg-scripts": "^2.11.0"
       },
       "devDependencies": {
-        "egg-bin": "^4.15.0",
-        "egg-mock": "^4.0.1"
-      }
+        "autod": "^3.0.1",
+        "autod-egg": "^1.1.0",
+        "egg-bin": "^4.11.0",
+        "egg-ci": "^1.11.0",
+        "egg-mock": "^3.21.0",
+        "eslint": "^5.13.0",
+        "eslint-config-egg": "^7.1.0"
+      },
+      "engines": {
+        "node": ">=10.0.0"
+      },
+      "scripts": {
+        "start": "egg-scripts start --daemon --title=egg-server-egg_server",
+        "stop": "egg-scripts stop --title=egg-server-egg_server",
+        "dev": "egg-bin dev",
+        "debug": "egg-bin debug",
+        "test": "npm run lint -- --fix && npm run test-local",
+        "test-local": "egg-bin test",
+        "cov": "egg-bin cov",
+        "lint": "eslint .",
+        "ci": "npm run lint && npm run cov",
+        "autod": "autod"
+      },
+      "ci": {
+        "version": "10"
+      },
+      "repository": {
+        "type": "git",
+        "url": ""
+      },
+      "author": "",
+      "license": "MIT"
     },
     "baseDir": "/Users/likanghua/node_pro/node_pro/egg_server",
     "HOME": "/Users/likanghua",
@@ -250,17 +287,19 @@
     "logger": {
       "dir": "/Users/likanghua/node_pro/node_pro/egg_server/logs/egg_server",
       "encoding": "utf8",
-      "env": "unittest",
+      "env": "local",
       "level": "INFO",
-      "consoleLevel": "WARN",
+      "consoleLevel": "INFO",
       "disableConsoleAfterReady": false,
       "outputJSON": false,
-      "buffer": false,
+      "buffer": true,
       "appLogName": "egg_server-web.log",
       "coreLogName": "egg-web.log",
       "agentLogName": "egg-agent.log",
       "errorLogName": "common-error.log",
-      "coreLogger": {},
+      "coreLogger": {
+        "consoleLevel": "WARN"
+      },
       "allowDebugAtProd": false,
       "type": "application"
     },
@@ -296,9 +335,9 @@
       "bodyParser",
       "overrideMethod",
       "session",
-      "clusterAppMock",
       "securities",
-      "i18n"
+      "i18n",
+      "eggLoaderTrace"
     ],
     "workerStartTimeout": 600000,
     "serverTimeout": null,
@@ -314,18 +353,7 @@
       "responseTimeout": 60000
     },
     "onClientError": null,
-    "news": {
-      "pageSize": 5,
-      "serverUrl": "https://hacker-news.firebaseio.com/v0"
-    },
-    "middleware": [
-      "robot"
-    ],
-    "robot": {
-      "ua": [
-        {}
-      ]
-    },
+    "middleware": [],
     "coreMiddlewares": "~config~coreMiddleware",
     "appMiddlewares": "~config~middleware",
     "appMiddleware": "~config~middleware",
@@ -416,7 +444,7 @@
       "version": "2.8.0"
     },
     "development": {
-      "enable": false,
+      "enable": true,
       "package": "egg-development",
       "name": "development",
       "dependencies": [
@@ -489,28 +517,16 @@
       "path": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-view",
       "version": "2.1.3"
     },
-    "nunjucks": {
+    "mysql": {
       "enable": true,
-      "package": "egg-view-nunjucks",
-      "name": "nunjucks",
-      "dependencies": [
-        "security",
-        "view"
-      ],
-      "optionalDependencies": [],
-      "env": [],
-      "from": "/Users/likanghua/node_pro/node_pro/egg_server/config/plugin.js",
-      "path": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-view-nunjucks",
-      "version": "2.2.0"
-    },
-    "egg-mock": {
-      "enable": true,
-      "path": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-mock",
-      "name": "egg-mock",
+      "package": "egg-mysql",
+      "name": "mysql",
       "dependencies": [],
       "optionalDependencies": [],
       "env": [],
-      "version": "4.0.1"
+      "from": "/Users/likanghua/node_pro/node_pro/egg_server/config/plugin.js",
+      "path": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-mysql",
+      "version": "3.0.0"
     }
   }
 }

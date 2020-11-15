@@ -1,21 +1,20 @@
 {
   "keys": "/Users/likanghua/node_pro/node_pro/egg_server/config/config.default.js",
-  "view": {
-    "defaultViewEngine": "/Users/likanghua/node_pro/node_pro/egg_server/config/config.default.js",
-    "mapping": {
-      ".tpl": "/Users/likanghua/node_pro/node_pro/egg_server/config/config.default.js"
-    },
-    "root": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-view/config/config.default.js",
-    "cache": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-view/config/config.default.js",
-    "defaultExtension": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-view/config/config.default.js"
-  },
-  "news": {
-    "pageSize": "/Users/likanghua/node_pro/node_pro/egg_server/config/config.default.js",
-    "serverUrl": "/Users/likanghua/node_pro/node_pro/egg_server/config/config.default.js"
-  },
   "middleware": "/Users/likanghua/node_pro/node_pro/egg_server/config/config.default.js",
-  "robot": {
-    "ua": "/Users/likanghua/node_pro/node_pro/egg_server/config/config.default.js"
+  "mysql": {
+    "client": {
+      "host": "/Users/likanghua/node_pro/node_pro/egg_server/config/config.default.js",
+      "port": "/Users/likanghua/node_pro/node_pro/egg_server/config/config.default.js",
+      "user": "/Users/likanghua/node_pro/node_pro/egg_server/config/config.default.js",
+      "password": "/Users/likanghua/node_pro/node_pro/egg_server/config/config.default.js",
+      "database": "/Users/likanghua/node_pro/node_pro/egg_server/config/config.default.js"
+    },
+    "default": {
+      "database": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-mysql/config/config.default.js",
+      "connectionLimit": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-mysql/config/config.default.js"
+    },
+    "app": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-mysql/config/config.default.js",
+    "agent": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-mysql/config/config.default.js"
   },
   "session": {
     "maxAge": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-session/config/config.default.js",
@@ -44,7 +43,7 @@
       "value": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-security/config/config.default.js"
     },
     "hsts": {
-      "enable": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-security/config/config.default.js",
+      "enable": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-security/config/config.local.js",
       "maxAge": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-security/config/config.default.js",
       "includeSubdomains": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-security/config/config.default.js"
     },
@@ -99,7 +98,7 @@
     "cookieMaxAge": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-i18n/config/config.default.js"
   },
   "watcher": {
-    "type": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-watcher/config/config.unittest.js",
+    "type": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-watcher/config/config.local.js",
     "eventSources": {
       "default": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-watcher/config/config.default.js",
       "development": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-watcher/config/config.default.js"
@@ -130,6 +129,14 @@
       "cron": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-multipart/config/config.default.js"
     }
   },
+  "development": {
+    "watchDirs": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-development/config/config.default.js",
+    "ignoreDirs": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-development/config/config.default.js",
+    "fastReady": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-development/config/config.default.js",
+    "reloadOnDebug": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-development/config/config.default.js",
+    "overrideDefault": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-development/config/config.default.js",
+    "overrideIgnore": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-development/config/config.default.js"
+  },
   "logrotator": {
     "filesRotateByHour": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-logrotator/config/config.default.js",
     "hourDelimiter": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-logrotator/config/config.default.js",
@@ -147,12 +154,12 @@
     "buffer": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-static/config/config.default.js",
     "maxFiles": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-static/config/config.default.js"
   },
-  "nunjucks": {
-    "autoescape": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-view-nunjucks/config/config.default.js",
-    "throwOnUndefined": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-view-nunjucks/config/config.default.js",
-    "trimBlocks": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-view-nunjucks/config/config.default.js",
-    "lstripBlocks": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-view-nunjucks/config/config.default.js",
-    "cache": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-view-nunjucks/config/config.default.js"
+  "view": {
+    "root": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-view/config/config.default.js",
+    "cache": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-view/config/config.local.js",
+    "defaultExtension": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-view/config/config.default.js",
+    "defaultViewEngine": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-view/config/config.default.js",
+    "mapping": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg-view/config/config.default.js"
   },
   "env": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
   "name": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
@@ -167,22 +174,48 @@
     "name": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
     "version": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
     "description": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
-    "main": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
-    "scripts": {
-      "test": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
-      "dev": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js"
+    "private": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
+    "egg": {
+      "declarations": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js"
     },
-    "keywords": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
-    "author": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
-    "license": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
     "dependencies": {
       "egg": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
-      "egg-view-nunjucks": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js"
+      "egg-mysql": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
+      "egg-scripts": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js"
     },
     "devDependencies": {
+      "autod": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
+      "autod-egg": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
       "egg-bin": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
-      "egg-mock": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js"
-    }
+      "egg-ci": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
+      "egg-mock": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
+      "eslint": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
+      "eslint-config-egg": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js"
+    },
+    "engines": {
+      "node": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js"
+    },
+    "scripts": {
+      "start": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
+      "stop": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
+      "dev": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
+      "debug": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
+      "test": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
+      "test-local": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
+      "cov": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
+      "lint": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
+      "ci": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
+      "autod": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js"
+    },
+    "ci": {
+      "version": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js"
+    },
+    "repository": {
+      "type": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
+      "url": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js"
+    },
+    "author": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
+    "license": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js"
   },
   "baseDir": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
   "HOME": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
@@ -222,15 +255,17 @@
     "encoding": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
     "env": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
     "level": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
-    "consoleLevel": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.unittest.js",
+    "consoleLevel": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
     "disableConsoleAfterReady": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
     "outputJSON": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
-    "buffer": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.unittest.js",
+    "buffer": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
     "appLogName": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
     "coreLogName": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
     "agentLogName": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
     "errorLogName": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
-    "coreLogger": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js",
+    "coreLogger": {
+      "consoleLevel": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.local.js"
+    },
     "allowDebugAtProd": "/Users/likanghua/node_pro/node_pro/egg_server/node_modules/egg/config/config.default.js"
   },
   "httpclient": {

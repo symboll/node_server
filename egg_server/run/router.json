@@ -19,8 +19,8 @@
       "GET"
     ],
     "paramNames": [],
-    "path": "/news",
-    "regexp": "/^\\/news(?:\\/(?=$))?$/",
+    "path": "/api/products",
+    "regexp": "/^\\/api\\/products(?:\\/(?=$))?$/",
     "stack": [
       "wrappedController"
     ]

@@ -1,9 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
-import { ApiOperation, ApiProperty, ApiTags } from '@nestjs/swagger'
+import { ApiOperation, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { ReturnModelType } from '@typegoose/typegoose';
-import { IsNotEmpty } from 'class-validator'
+import { IsNotEmpty } from 'class-validator';
 import { InjectModel } from 'nestjs-typegoose';
-import { Post as PostSchema } from './post.model'
+import { Post as PostSchema } from './post.model';
 
 class PostDto {
   @ApiProperty({ description: '贴子标题', example: '标题' })
@@ -21,40 +21,43 @@ class PostDto {
 @ApiTags('帖子')
 @Controller('posts')
 export class PostsController {
-  constructor(
+  constructor (
     @InjectModel(PostSchema) private readonly postModel: ReturnModelType<typeof PostSchema> 
   ) {}
 
-  @Get()
   @ApiOperation({ summary: '获取所有帖子信息' })
-  async index(){
-    return await this.postModel.find()
+  @Get()
+  async index () {
+    const res = await this.postModel.find()
+    return res
   }
- 
-  @Get(':id')
+
   @ApiOperation({ summary: '获取帖子详情' })
+  @Get(':id')
   async detail (@Param('id') id: string) {
-    return this.postModel.findById(id)
+    const res = await this.postModel.findById(id)
+    return res ? res: {}
   }
 
-  @Post() 
   @ApiOperation({ summary: '创建帖子' })
-  async create(@Body() dto:PostDto) {
-    const r = await this.postModel.create(dto)
-    if(r) return { success: true }
+  @Post()
+  async create (@Body() dto: PostDto) {
+    const res = await this.postModel.create(dto)
+    return res._id ? { success: true } : { success: false }
   }
 
-
+  @ApiOperation({ summary: '更新帖子' })
   @Put(':id')
-  @ApiOperation({ summary: '修改帖子' })
-  async update (@Param('id') id: string, @Body() dto: PostDto) {
-    return await this.postModel.findByIdAndUpdate(id, dto)
+  async update (@Param('id') id:string, @Body() dto: PostDto) {
+    const res = await this.postModel.findByIdAndUpdate(id, dto)
+    return res._id? { success: true } : { success: false }
   }
 
-  @Delete(':id')
   @ApiOperation({ summary: '删除帖子' })
+  @Delete(':id')
   async remove (@Param('id') id: string) {
-    const r = await this.postModel.findByIdAndDelete(id)
-    if(r) return { success: true }
+    const res = await this.postModel.findByIdAndDelete(id)
+    return res._id? { success: true } : { success: false }
   }
+
 }

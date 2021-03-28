@@ -1,59 +1,69 @@
-### express
-### koa2
-### egg
-### nest
+## express koa2 egg nest
 
-```
-400 无法解析此请求。
-401.1 未经授du权：访问由于凭zhi据无效被拒绝。
-401.2 未经授权: 访问由于服务器配置倾向使用替代身份验dao证方法而被拒绝。
-401.3 未经授权：访问由于 ACL 对所请求资源的设置被拒绝。
-401.4 未经授权：Web 服务器上安装的筛选器授权失败。
-401.5 未经授权：ISAPI/CGI 应用程序授权失败。
-401.7 未经授权：由于 Web 服务器上的 URL 授权策略而拒绝访问。
-403 禁止访问：访问被拒绝。
-403.1 禁止访问：执行访问被拒绝。
-403.2 禁止访问：读取访问被拒绝。
-403.3 禁止访问：写入访问被拒绝。
-403.4 禁止访问：需要使用 SSL 查看该资源。
-403.5 禁止访问：需要使用 SSL 128 查看该资源。
-403.6 禁止访问：客户端的 IP 地址被拒绝。
-403.7 禁止访问：需要 SSL 客户端证书。
-403.8 禁止访问：客户端的 DNS 名称被拒绝。
-403.9 禁止访问：太多客户端试图连接到 Web 服务器。
-403.10 禁止访问：Web 服务器配置为拒绝执行访问。
-403.11 禁止访问：密码已更改。
-403.12 禁止访问：服务器证书映射器拒绝了客户端证书访问。
-403.13 禁止访问：客户端证书已在 Web 服务器上吊销。
-403.14 禁止访问：在 Web 服务器上已拒绝目录列表。
-403.15 禁止访问：Web 服务器已超过客户端访问许可证限制。
-403.16 禁止访问：客户端证书格式错误或未被 Web 服务器信任。
-403.17 禁止访问：客户端证书已经到期或者尚未生效。
-403.18 禁止访问：无法在当前应用程序池中执行请求的 URL。
-403.19 禁止访问：无法在该应用程序池中为客户端执行 CGI。
-403.20 禁止访问：Passport 登录失败。
-404 找不到文件或目录。
-404.1 文件或目录未找到：网站无法在所请求的端口访问。
-404.2 文件或目录无法找到：锁定策略禁止该请求。
-404.3 文件或目录无法找到：MIME 映射策略
-405 用于访问该页的 HTTP 动作未被许可。
-406 客户端浏览器不接受所请求页面的 MIME 类型。
-407 Web 服务器需要初始的代理验证。
-410 文件已删除。
-412 客户端设置的前提条件在 Web 服务器上评估时失败。
-414 请求 URL 太大，因此在 Web 服务器上不接受该 URL。
-500 服务器内部错误。
-500.11 服务器错误：Web 服务器上的应用程序正在关闭。
-500.12 服务器错误：Web 服务器上的应用程序正在重新启动。
-500.13 服务器错误：Web 服务器太忙。
-500.14 服务器错误：服务器上的无效应用程序配置。
-500.15 服务器错误：不允许直接请求 GLOBAL.ASA。
-500.16 服务器错误：UNC 授权凭据不正确。
-500.17 服务器错误：URL 授权存储无法找到。
-500.18 服务器错误：URL 授权存储无法打开。
-500.19 服务器错误：该文件的数据在配置数据库中配置不正确。
-500.20 服务器错误：URL 授权域无法找到。
-500 100 内部服务器错误：ASP 错误。
-501 标题值指定的配置没有执行。
-502 Web 服务器作为网关或代理服务器时收到无效的响应。
+### Todolist
+#### top1. 用户系统 [登录, 鉴权 ]
+#### top2. 文件上传
+#### top3. 音视频
+#### top4. 协同，聊天[ socket.io ]
+
+### response.status
+``` js
+100 "continue"
+101 "switching protocols"
+102 "processing"
+200 "ok"
+201 "created"
+202 "accepted"
+203 "non-authoritative information"
+204 "no content"
+205 "reset content"
+206 "partial content"
+207 "multi-status"
+208 "already reported"
+226 "im used"
+300 "multiple choices"
+301 "moved permanently"
+302 "found"
+303 "see other"
+304 "not modified"
+305 "use proxy"
+307 "temporary redirect"
+308 "permanent redirect"
+400 "bad request"
+401 "unauthorized"        // 无权限
+402 "payment required"    // 预留
+403 "forbidden"           // 禁止访问
+404 "not found"           // 页面丢失
+405 "method not allowed"  // 方法不被允许
+406 "not acceptable"
+407 "proxy authentication required"
+408 "request timeout"
+409 "conflict"
+410 "gone"
+411 "length required"
+412 "precondition failed"
+413 "payload too large"
+414 "uri too long"
+415 "unsupported media type"
+416 "range not satisfiable"
+417 "expectation failed"
+418 "I'm a teapot"
+422 "unprocessable entity"
+423 "locked"
+424 "failed dependency"
+426 "upgrade required"
+428 "precondition required"
+429 "too many requests"
+431 "request header fields too large"
+500 "internal server error"
+501 "not implemented"
+502 "bad gateway"
+503 "service unavailable"
+504 "gateway timeout"
+505 "http version not supported"
+506 "variant also negotiates"
+507 "insufficient storage"
+508 "loop detected"
+510 "not extended"
+511 "network authentication required"
 ```

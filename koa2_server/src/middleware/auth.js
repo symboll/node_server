@@ -24,7 +24,7 @@ class Auth {
           ctx.throw(403, 'token不合法!')
         }
       } else {
-        throw new Exception('禁止访问',403)
+        ctx.throw(403, '禁止访问')
       }
   
       await next()

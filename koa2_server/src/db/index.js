@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
+const { mdb: { host,port, dbName } } = require('../config')
 
-mongoose.connect('mongodb://127.0.0.1:27017/melon',{
+mongoose.connect(`${host}:${port}/${dbName}`,{
   useNewUrlParser: true, 
   useUnifiedTopology: true,
   useFindAndModify: false

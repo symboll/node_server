@@ -6,6 +6,7 @@ const port = 3000
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors()
   app.useGlobalPipes(new ValidationPipe() )
   const options = new DocumentBuilder()
     .setTitle('Nest example')

@@ -2,9 +2,10 @@
 
 ### Todolist
 #### top1. 用户系统 [登录, 鉴权 ]
-#### top2. 文件上传
-#### top3. 音视频
-#### top4. 协同，聊天[ socket.io ]
+#### top2. 日志
+#### top3. 文件上传
+#### top4. 音视频
+#### top5. 协同，聊天[ socket.io ]
 
 ### response.status
 ``` js
@@ -29,19 +30,19 @@
 305 "use proxy"
 307 "temporary redirect"
 308 "permanent redirect"
-400 "bad request"
-401 "unauthorized"        // 无权限
+400 "bad request"         // 错误请求，服务器不理解
+401 "unauthorized"        // 无权限, 需要身份验证
 402 "payment required"    // 预留
 403 "forbidden"           // 禁止访问
 404 "not found"           // 页面丢失
 405 "method not allowed"  // 方法不被允许
-406 "not acceptable"
-407 "proxy authentication required"
-408 "request timeout"
-409 "conflict"
+406 "not acceptable"      // 无法使用 请求的内容特性 响应请求的网页
+407 "proxy authentication required"  // 需要代理身份验证
+408 "request timeout"      //请求超时
+409 "conflict"              // 冲突
 410 "gone"
 411 "length required"
-412 "precondition failed"
+412 "precondition failed"   // 先决条件失败
 413 "payload too large"
 414 "uri too long"
 415 "unsupported media type"
@@ -52,9 +53,9 @@
 423 "locked"
 424 "failed dependency"
 426 "upgrade required"
-428 "precondition required"
-429 "too many requests"
-431 "request header fields too large"
+428 "precondition required"    // 要求先决条件
+429 "too many requests"      // 太多请求, 需要限流
+431 "request header fields too large"    // 请求头字段太大
 500 "internal server error"
 501 "not implemented"
 502 "bad gateway"

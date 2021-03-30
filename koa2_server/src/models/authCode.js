@@ -17,7 +17,7 @@ const schema = Schema({
     required: true,
     enum: ['PAGE', 'FUNC']
   }        // 权限码类别
-})
+}, { timestamps: true })
 
 
 

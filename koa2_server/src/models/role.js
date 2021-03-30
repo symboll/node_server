@@ -11,6 +11,11 @@ const schema = Schema({
     type: String, 
     required: true
   },       // 角色名
+  level: {
+    type: Number,
+    required: true,
+    default: 1
+  },
   auth: { 
     type: [{
       type: Schema.Types.ObjectId,
@@ -18,6 +23,6 @@ const schema = Schema({
     }], 
     required: true
   }
-})
+}, { timestamps: true })
  
  module.exports = model('Role', schema)

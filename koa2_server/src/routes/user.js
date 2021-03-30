@@ -14,6 +14,9 @@ router.post('/login', user.login)
 // 赋予权限 
 router.post('/assignment', auth.check(), user.assignment)
 
+// 获取用户信息
+router.get('/authorization', auth.check(), user.authorization)
+
 module.exports = router
 
 

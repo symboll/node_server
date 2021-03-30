@@ -4,8 +4,9 @@ const koaBody = require('koa-body')
 const koaParameter = require('koa-parameter')
 const error = require('koa-json-error')
 const koaStatic = require('koa-static')
-var cors = require('koa2-cors')
+const cors = require('koa2-cors')
 const routing = require('./src/routes')
+const catchError = require('./src/middleware/catchError')
 require('./src/db')
 
 
@@ -29,13 +30,15 @@ app.use(cors({
   exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'] //设置获取其他自定义字段
 }))
 
-// 静态文件
-app.use(koaStatic(path.join(__dirname,'public')))
-
 // 错误处理
 app.use(error({
   postFormat: (e, {stack,...rest}) => rest
 }))
+app.use(catchError)
+
+// 静态文件
+app.use(koaStatic(path.join(__dirname,'public')))
+
 
 // 上传文件
 app.use(koaBody({

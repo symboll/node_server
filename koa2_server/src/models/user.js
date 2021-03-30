@@ -25,6 +25,6 @@ const schema = Schema({
       ref: "Role"
     }]
   }
-})
+}, { timestamps: true })
  
 module.exports = model('User', schema)

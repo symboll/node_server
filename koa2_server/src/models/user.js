@@ -9,6 +9,7 @@ const { Schema, model } = mongoose
 const schema = Schema({
   __v: {type: Number, select: false},
   username: { type: String, required: true  },
+  avatar: { type: String },
   password: { 
     type: String, 
     required: true, 

@@ -10,21 +10,32 @@ class Role {
       res.count = 0
       res.count = await roleModel.countDocuments()
       if(res.count) {
-        res.roles = await roleModel.find().sort({ createdAt: 'desc' })
+        res.roles = await roleModel.find()
+          .limit(100)
+          .sort({ createdAt: 'desc' })
       }
       ctx.body = new Success({ data: res })
     } else {
-      res.roles = []
-      const result = await roleModel.findOne(query)
-      res.roles.push(result)
+      /**
+       * 模糊查询
+       */
+      const and = []
+      const q = Object.keys(query)
+      for(let k of q) {
+        and.push({ [k] : new RegExp(query[k]) })
+      }
+      const result = await roleModel.find({
+        $and: and
+      }).sort({ createdAt: 'desc' })
+      res.roles = result
       ctx.body = new Success({ data: res })
     }
   }
 
   async create (ctx) {
     const { name, auth, level } = ctx.request.body
-    if(!name || !auth) { 
-      throw new Exception({ message: 'name or auth 必填!' })
+    if(!name || !auth || !level) { 
+      throw new Exception({ message: 'name or auth or level必填!' })
     }
     const role = await roleModel.findOne({name})
     if(role) {
@@ -46,8 +57,7 @@ class Role {
       throw new Exception({ message: '缺失更新参数!' })
     }
     const role = await roleModel.findById(id)
-    const updateRole = Object.assign(role, body)
-    const { name, auth,level } = updateRole
+    const { name, auth,level } = Object.assign(role, body)
     try {
       await roleModel.findByIdAndUpdate(id, { name, auth, level })
       ctx.body = new Success({})

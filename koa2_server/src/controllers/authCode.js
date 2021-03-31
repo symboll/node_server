@@ -9,13 +9,24 @@ class AuthCode {
       res.count = 0
       res.count = await authCodeModel.countDocuments()
       if(res.count) {
-        res.authcode = await authCodeModel.find().sort({ createdAt: 'desc' })
+        res.authcode = await authCodeModel.find()
+          .limit(100)
+          .sort({ createdAt: 'desc' })
       }
       ctx.body = new Success({ data: res })
     } else {
-      res.authcode = []
-      const result = await authCodeModel.findOne(query)
-      res.authcode.push(result)
+      /**
+       * 模糊查询
+       */
+      const and = []
+      const q = Object.keys(query)
+      for(let k of q) {
+        and.push({ [k] : new RegExp(query[k]) })
+      }
+      const result = await authCodeModel.find({
+        $and: and
+      }).sort({ createdAt: 'desc' })
+      res.authcode = result
       ctx.body = new Success({ data: res })
     }
   }
@@ -47,8 +58,7 @@ class AuthCode {
       throw new Exception({ message: '缺失更新参数!' })
     } 
 
-    const updateCode = Object.assign(authCode, body)
-    const { code, type } = updateCode
+    const { code, type } = Object.assign(authCode, body)
     try {
       await authCodeModel.findByIdAndUpdate(id, { code, type })
       ctx.body = new Success({})

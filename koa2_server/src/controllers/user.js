@@ -15,26 +15,31 @@ class User {
       res.count = 0
       res.count = await userModel.countDocuments()
       if(res.count) {
-        let users = await userModel.find().limit(100).sort({ createdAt: 'desc' })      // 没有查询条件，最多查询100条
-        for(let k of users) {
-          if( k.role && k.role.length !== 0) {
-            k.role = await roleModel.find({ _id: { $in: k.role } })
-          } 
-        }
-        users = users.map(item => {
-          const { role, username, email, createdAt, updatedAt } = item
-          return { role, username, email, createdAt, updatedAt }
-        })
+        let users = await userModel.find()
+          .select('-password')                 // 剔除密码
+          .limit(100)                          // 没有查询条件，最多查询100条
+          .sort({ createdAt: 'desc' })      
+        // for(let k of users) {
+        //   if( k.role && k.role.length !== 0) {
+        //     k.role = await roleModel.find({ _id: { $in: k.role } })
+        //   } 
+        // }
         res.users = users
       }
       ctx.body = new Success({ data: res })
     } else {
-      res.users = []
-      const result = await userModel.findOne(query)
-      if(result && result.role && result.role.length !== 0){
-        result.role = await roleModel.find({ _id: { $in: result.role } })
+      /**
+       * 模糊查询
+       */
+      const and = []
+      const q = Object.keys(query)
+      for(let k of q) {
+        and.push({ [k] : new RegExp(query[k]) })
       }
-      res.users.push(result)
+      const result = await userModel.find({ $and: and })
+        .select('-password')
+        .sort({ createdAt: 'desc' })
+      res.users = result
       ctx.body = new Success({ data: res })
     }
   }

@@ -10,7 +10,7 @@ class Role {
       res.count = 0
       res.count = await roleModel.countDocuments()
       if(res.count) {
-        res.roles = await roleModel.find()
+        res.roles = await roleModel.find().sort({ createdAt: 'desc' })
       }
       ctx.body = new Success({ data: res })
     } else {
@@ -47,9 +47,9 @@ class Role {
     }
     const role = await roleModel.findById(id)
     const updateRole = Object.assign(role, body)
-    const { name, auth } = updateRole
+    const { name, auth,level } = updateRole
     try {
-      await roleModel.findByIdAndUpdate(id, { name, auth })
+      await roleModel.findByIdAndUpdate(id, { name, auth, level })
       ctx.body = new Success({})
     }catch (e) {
       throw new Exception({ message: '更新失败!'+ e })

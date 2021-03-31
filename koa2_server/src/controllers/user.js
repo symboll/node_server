@@ -15,12 +15,16 @@ class User {
       res.count = 0
       res.count = await userModel.countDocuments()
       if(res.count) {
-        let users = await userModel.find().limit(100)      // 没有查询条件，最多查询100条
+        let users = await userModel.find().limit(100).sort({ createdAt: 'desc' })      // 没有查询条件，最多查询100条
         for(let k of users) {
           if( k.role && k.role.length !== 0) {
             k.role = await roleModel.find({ _id: { $in: k.role } })
           } 
         }
+        users = users.map(item => {
+          const { role, username, email, createdAt, updatedAt } = item
+          return { role, username, email, createdAt, updatedAt }
+        })
         res.users = users
       }
       ctx.body = new Success({ data: res })
@@ -39,8 +43,9 @@ class User {
     try {
       const hasRegister = await userModel.findOne({ email })
       if(! (hasRegister && hasRegister._id)) {
-        const res  = await userModel.create({username, password, email})
-        ctx.body = new Success({ data: res })
+        await userModel.create({username, password, email})
+        ctx.body = new Success({})
+        ctx.status = 201
       } else {
         throw new Exception({ message: `邮箱:${email},已经注册` })
       }
@@ -88,7 +93,7 @@ class User {
   }
 
   async authorization (ctx) {
-    console.log('ctx.auth--->',ctx.auth)
+    // console.log('ctx.auth--->',ctx.auth)
     ctx.body = new Success({ data: ctx.auth })
   }
 }

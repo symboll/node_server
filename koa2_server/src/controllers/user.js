@@ -10,37 +10,51 @@ class User {
 
   async list(ctx) {
     const { query } = ctx.request
-    let res = {} 
-    if(Object.keys(query).length === 0) {
-      res.count = 0
-      res.count = await userModel.countDocuments()
-      if(res.count) {
-        let users = await userModel.find()
-          .select('-password')                 // 剔除密码
-          .limit(100)                          // 没有查询条件，最多查询100条
-          .sort({ createdAt: 'desc' })      
-        // for(let k of users) {
-        //   if( k.role && k.role.length !== 0) {
-        //     k.role = await roleModel.find({ _id: { $in: k.role } })
-        //   } 
-        // }
-        res.users = users
+    let res = { total: 0 } 
+    try {
+      if(Object.keys(query).length === 0) {
+        res.total = await userModel.countDocuments()
+        if(res.total) {
+          let users = await userModel.find()
+            .select('-password')                 // 剔除密码
+            .limit(100)                          // 没有查询条件，最多查询100条
+            .sort({ createdAt: 'desc' })      
+          // for(let k of users) {
+          //   if( k.role && k.role.length !== 0) {
+          //     k.role = await roleModel.find({ _id: { $in: k.role } })
+          //   } 
+          // }
+          res.users = users
+        }
+        ctx.body = new Success({ data: res })
+      } else {
+        /**
+         * 模糊查询
+         * 存在 pageSize 或 pageNo 就认为是 分页查询
+         */
+        const and = []
+        const { pageSize=10, pageNo=1, ...p } = query
+        const q = Object.keys(p)
+        for(let k of q) {
+          if(k === '_id'){
+            and.push({ [k]: query[k] })
+          }else {
+            and.push({ [k]: new RegExp(query[k]) })
+          }
+        }
+        res.total = await userModel.countDocuments({$and: and })
+        if(res.total) {
+          const result = await userModel.find({$and: and })
+            .select('-password')
+            .skip((pageNo - 1) * (parseInt(pageSize)|| 10))
+            .limit(parseInt(pageSize)|| 10)
+            .sort({ createdAt: 'desc' })
+          res.roles = result
+        }
+        ctx.body = new Success({ data: res })
       }
-      ctx.body = new Success({ data: res })
-    } else {
-      /**
-       * 模糊查询
-       */
-      const and = []
-      const q = Object.keys(query)
-      for(let k of q) {
-        and.push({ [k] : new RegExp(query[k]) })
-      }
-      const result = await userModel.find({ $and: and })
-        .select('-password')
-        .sort({ createdAt: 'desc' })
-      res.users = result
-      ctx.body = new Success({ data: res })
+    }catch (e) {
+      throw new Exception({ message: '查询失败!'+ e.reason ? e.reason: e.message })
     }
   }
   async register (ctx) {
@@ -67,8 +81,7 @@ class User {
 
         const res = bcrypt.compareSync(password,hasRegister.password)
         if(!res){
-          ctx.body = new Success({ code: -1, message: "密码错误" })
-          return
+          throw new Exception({ message: '密码错误!' })
         }
         const token = getToken(hasRegister.username, hasRegister.role)
         ctx.body = new Success({ data: token })

@@ -5,30 +5,43 @@ class Role {
 
   async list(ctx) { 
     const { query } = ctx.request
-    let res = {} 
-    if(Object.keys(query).length === 0) {
-      res.count = 0
-      res.count = await roleModel.countDocuments()
-      if(res.count) {
-        res.roles = await roleModel.find()
-          .limit(100)
-          .sort({ createdAt: 'desc' })
+    let res = { total: 0 } 
+    try {
+      if(Object.keys(query).length === 0) {
+        res.total = await roleModel.countDocuments()
+        if(res.count) {
+          res.roles = await roleModel.find()
+            .limit(10)
+            .sort({ createdAt: 'desc' })
+        }
+        ctx.body = new Success({ data: res })
+      } else {
+        /**
+         * 模糊查询
+         * 存在 pageSize 或 pageNo 就认为是 分页查询
+         */
+        const and = []
+        const { pageSize=10, pageNo=1, ...p } = query
+        const q = Object.keys(p)
+        for(let k of q) {
+          if(k === '_id'){
+            and.push({ [k]: query[k] })
+          }else {
+            and.push({ [k]: new RegExp(query[k]) })
+          }
+        }
+        res.total = await roleModel.countDocuments({$and: and })
+        if(res.total) {
+          const result = await roleModel.find({$and: and })
+            .skip((pageNo - 1) * (parseInt(pageSize)|| 10))
+            .limit(parseInt(pageSize)|| 10)
+            .sort({ createdAt: 'desc' })
+          res.roles = result
+        }
+        ctx.body = new Success({ data: res })
       }
-      ctx.body = new Success({ data: res })
-    } else {
-      /**
-       * 模糊查询
-       */
-      const and = []
-      const q = Object.keys(query)
-      for(let k of q) {
-        and.push({ [k] : new RegExp(query[k]) })
-      }
-      const result = await roleModel.find({
-        $and: and
-      }).sort({ createdAt: 'desc' })
-      res.roles = result
-      ctx.body = new Success({ data: res })
+    }catch (e) {
+      throw new Exception({ message: '查询失败!'+ e.reason ? e.reason: e.message })
     }
   }
 

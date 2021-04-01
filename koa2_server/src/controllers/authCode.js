@@ -10,7 +10,7 @@ class AuthCode {
         res.total = await authCodeModel.countDocuments()
         if(res.total) {
           res.authcode = await authCodeModel.find()
-            .limit(100)
+            // .limit(10)
             .sort({ createdAt: 'desc' })
         }
         ctx.body = new Success({ data: res })
@@ -29,9 +29,11 @@ class AuthCode {
             and.push({ [k]: new RegExp(query[k]) })
           }
         }
-        res.total = await authCodeModel.countDocuments({$and: and })
+        const fuzzy = {}
+        if(and.length) fuzzy['$and'] = and
+        res.total = await authCodeModel.countDocuments(fuzzy)
         if(res.total) {
-          const result = await authCodeModel.find({$and: and })
+          const result = await authCodeModel.find(fuzzy)
             .skip((pageNo - 1) * (parseInt(pageSize)|| 10))
             .limit(parseInt(pageSize)|| 10)
             .sort({ createdAt: 'desc' })

@@ -17,7 +17,7 @@ class User {
         if(res.total) {
           let users = await userModel.find()
             .select('-password')                 // 剔除密码
-            .limit(100)                          // 没有查询条件，最多查询100条
+            .limit(10)                           // 没有查询条件，最多查询10条
             .sort({ createdAt: 'desc' })      
           // for(let k of users) {
           //   if( k.role && k.role.length !== 0) {
@@ -42,14 +42,16 @@ class User {
             and.push({ [k]: new RegExp(query[k]) })
           }
         }
-        res.total = await userModel.countDocuments({$and: and })
+        const fuzzy = {}
+        if(and.length) fuzzy['$and'] = and
+        res.total = await userModel.countDocuments(fuzzy)
         if(res.total) {
-          const result = await userModel.find({$and: and })
+          const result = await userModel.find(fuzzy)
             .select('-password')
             .skip((pageNo - 1) * (parseInt(pageSize)|| 10))
             .limit(parseInt(pageSize)|| 10)
             .sort({ createdAt: 'desc' })
-          res.roles = result
+          res.users = result
         }
         ctx.body = new Success({ data: res })
       }

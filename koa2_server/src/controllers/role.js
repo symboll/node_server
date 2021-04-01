@@ -9,9 +9,9 @@ class Role {
     try {
       if(Object.keys(query).length === 0) {
         res.total = await roleModel.countDocuments()
-        if(res.count) {
+        if(res.total) {
           res.roles = await roleModel.find()
-            .limit(10)
+            // .limit(10)
             .sort({ createdAt: 'desc' })
         }
         ctx.body = new Success({ data: res })
@@ -30,9 +30,11 @@ class Role {
             and.push({ [k]: new RegExp(query[k]) })
           }
         }
-        res.total = await roleModel.countDocuments({$and: and })
+        const fuzzy = {}
+        if(and.length) fuzzy['$and'] = and
+        res.total = await roleModel.countDocuments(fuzzy)
         if(res.total) {
-          const result = await roleModel.find({$and: and })
+          const result = await roleModel.find(fuzzy)
             .skip((pageNo - 1) * (parseInt(pageSize)|| 10))
             .limit(parseInt(pageSize)|| 10)
             .sort({ createdAt: 'desc' })

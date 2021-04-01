@@ -24,7 +24,7 @@ class Role {
         const { pageSize=10, pageNo=1, ...p } = query
         const q = Object.keys(p)
         for(let k of q) {
-          if(k === '_id'){
+          if(!isNaN(Number(p[k]))){
             and.push({ [k]: query[k] })
           }else {
             and.push({ [k]: new RegExp(query[k]) })

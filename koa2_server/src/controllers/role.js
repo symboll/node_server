@@ -20,18 +20,35 @@ class Role {
          * 模糊查询
          * 存在 pageSize 或 pageNo 就认为是 分页查询
          */
-        const and = []
+        const and = [], elemMatch = {}
         const { pageSize=10, pageNo=1, ...p } = query
         const q = Object.keys(p)
         for(let k of q) {
-          if(!isNaN(Number(p[k]))){
-            and.push({ [k]: query[k] })
+          if(k !== 'auth[]') {
+            if(!isNaN(Number(p[k]))){
+              and.push({ [k]: query[k] })
+            }else {
+              and.push({ [k]: new RegExp(query[k]) })
+            }
           }else {
-            and.push({ [k]: new RegExp(query[k]) })
+            if(Array.isArray(query[k])) {
+              for(let i of query[k]) {
+                and.push({
+                  auth: { $elemMatch: {
+                    $eq: i
+                  }}
+                })
+              }
+            } else {
+              elemMatch['$elemMatch'] = {$eq: query[k]}
+            }
           }
         }
         const fuzzy = {}
         if(and.length) fuzzy['$and'] = and
+
+        console.log('--fuzzy---->',fuzzy)
+
         res.total = await roleModel.countDocuments(fuzzy)
         if(res.total) {
           const result = await roleModel.find(fuzzy)

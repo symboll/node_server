@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const { security: { key }} = require('../config')
+const userModel = require('../models/user')
 const roleModel = require('../models/role')
 const authCodeModel = require('../models/authCode')
 const { Exception } = require('../util/res_model')
@@ -17,7 +18,7 @@ class Auth {
           let decode = jwt.verify(token, key )
           ctx.auth = {
             name: decode.name,
-            role: decode.role
+            _id: decode._id
           }
           await next()
         }catch (error) {
@@ -37,8 +38,9 @@ class Auth {
 
   checkAuth (code) {
     return async(ctx, next) => {
-      const { name, role } = ctx.auth
-      if(role && role.length > 0) {
+      const { _id } = ctx.auth
+      const user = await userModel.findById(_id)
+      if( user && user.role && user.role.length > 0) {
         const RoleRes = await roleModel.find({ _id: { $in: role } })
         let authArr = []
         RoleRes.forEach(item => authArr.push(...item.auth))

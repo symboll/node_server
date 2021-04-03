@@ -15,10 +15,13 @@ router.post('/register', user.register)
 // 登录
 router.post('/login', user.login)
 
-// 赋予权限 
-router.post('/assignment', auth.check(), user.assignment)
+// 赋予权限 [ 更新用户权限信息, 只能更新别人的。且 需要高级权限 ]
+router.post('/assignment', auth.check(), auth.checkAuth('setting') ,user.assignment)
 
-// 获取用户信息
+// 更新个人信息 [ 更新基本信息  只能更新自己的信息。 需要登录 ]
+router.post('/update', auth.check(), user.update)
+
+// 获取用户信息 [产生新的 token ]
 router.get('/authorization', auth.check(), user.authorization)
 
 module.exports = router

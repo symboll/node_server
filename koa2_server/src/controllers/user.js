@@ -11,8 +11,8 @@ class User {
   async list(ctx) {
     const { query } = ctx.request
     let res = { total: 0 } 
-    try {
-      if(Object.keys(query).length === 0) {
+    if(Object.keys(query).length === 0) {
+      try {
         res.total = await userModel.countDocuments()
         if(res.total) {
           let users = await userModel.find()
@@ -27,40 +27,43 @@ class User {
           res.users = users
         }
         ctx.body = new Success({ data: res })
-      } else {
-        /**
-         * 模糊查询
-         * 存在 pageSize 或 pageNo 就认为是 分页查询
-         */
-        const and = [], elemMatch = {}
-        const { pageSize=10, pageNo=1, ...p } = query
-        const q = Object.keys(p)
-        for(let k of q) {
-          if(k !== 'role[]') {
-            if(!isNaN(Number(p[k]))){
-              and.push({ [k]: query[k] })
-            }else {
-              and.push({ [k]: new RegExp(query[k]) })
-            }
+      }catch (e) {
+        throw new Exception({ message: '查询失败' + e.message })
+      }
+    } else {
+      /**
+       * 模糊查询
+       * 存在 pageSize 或 pageNo 就认为是 分页查询
+       */
+      const and = [], elemMatch = {}
+      const { pageSize=10, pageNo=1, ...p } = query
+      const q = Object.keys(p)
+      for(let k of q) {
+        if(k !== 'role[]') {
+          if(!isNaN(Number(p[k]))){
+            and.push({ [k]: query[k] })
           }else {
-            if(Array.isArray(query[k])) {
-              for(let i of query[k]) {
-                and.push({
-                  role: { $elemMatch: {
-                    $eq: i
-                  }}
-                })
-              }
-            } else {
-              elemMatch['$elemMatch'] = {$eq: query[k]}
+            and.push({ [k]: new RegExp(query[k]) })
+          }
+        }else {
+          if(Array.isArray(query[k])) {
+            for(let i of query[k]) {
+              and.push({
+                role: { $elemMatch: {
+                  $eq: i
+                }}
+              })
             }
+          } else {
+            elemMatch['$elemMatch'] = {$eq: query[k]}
           }
         }
-        const fuzzy = {}
-        if(and.length) fuzzy['$and'] = and
+      }
+      const fuzzy = {}
+      if(and.length) fuzzy['$and'] = and
 
-        console.log('fuzzy--->', JSON.stringify(fuzzy))
-
+      console.log('fuzzy--->', JSON.stringify(fuzzy))
+      try {
         res.total = await userModel.countDocuments(fuzzy)
         if(res.total) {
           const result = await userModel.find(fuzzy)
@@ -71,9 +74,9 @@ class User {
           res.users = result
         }
         ctx.body = new Success({ data: res })
+      } catch (e) {
+        throw new Exception({ message: '查询失败' + e.message })
       }
-    }catch (e) {
-      throw new Exception({ message: '查询失败!'+ e.reason ? e.reason: e.message })
     }
   }
   async register (ctx) {
@@ -102,7 +105,7 @@ class User {
         if(!res){
           throw new Exception({ message: '密码错误!' })
         }
-        const token = getToken(hasRegister.username, hasRegister.role)
+        const token = getToken(hasRegister.username, hasRegister._id)
         ctx.body = new Success({ data: token })
       }else {
         throw new Exception({ message: `用户名${username},尚未注册!` })
@@ -113,25 +116,48 @@ class User {
   }
 
   async assignment (ctx) {
-    const { id, role } = ctx.request.body
     // role []
     // 自己不能给自己赋权限
+    const { role } = ctx.request.body
+    const id = ctx.params.id
+    const { _id } = ctx.auth || {}
+    if(id === _id){
+      throw new Exception({ message: "不能给自己赋权限!"})
+    } 
     try {
-      const user = await userModel.findById(id)
-      if(user && user._id) {
-        await userModel.findByIdAndUpdate(id, { role })
-        ctx.body = new Success({ })
-      }else {
-        throw new Exception({ message: '出现错误!' })
-      }
+      await userModel.findByIdAndUpdate(id, { role })
+      ctx.body = new Success({})
     }catch (e) {
-      throw new Exception({ message: '无权限操作!' })
+      throw new Exception({ message: '无权限操作!' + e.message })
     }
   }
-
+  async update (ctx) {
+    const { body } = ctx.request
+    const id = ctx.params.id
+    if(Object.keys(body) === 0) {
+      throw new Exception({ message: '缺失更新参数!' })
+    } 
+    if(body.role) {
+      throw new Exception({ message: '不能给自己赋权限!' })
+    }
+    // const user = await userModel.findById(id)
+    // const { username, avatar, password, email } = Object.assign(user, body)
+    try {
+      // await userModel.findByIdAndUpdate(id, {username, avatar, password, email})
+      await userModel.findByIdAndUpdate(id, body)
+      ctx.body = new Success({})
+    }catch (e) {
+      throw new Exception({ message: '无权限操作!' + e.message })
+    }
+  }
   async authorization (ctx) {
-    // console.log('ctx.auth--->',ctx.auth)
-    ctx.body = new Success({ data: ctx.auth })
+    const { username, _id }  = ctx.auth || {}
+    if(!username || !_id){
+      throw new Exception({ message: '请先登录' })
+    }else {
+      const token = getToken(username, _id)
+      ctx.body = new Success({ data: token })
+    }
   }
 }
 

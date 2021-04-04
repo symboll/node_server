@@ -15,6 +15,9 @@ router.post('/register', user.register)
 // 登录
 router.post('/login', user.login)
 
+// 退出登录
+router.post('/logout', user.logout)
+
 // 赋予权限 [ 更新用户权限信息, 只能更新别人的。且 需要高级权限 ]
 router.post('/assignment', auth.check(), auth.checkAuth('setting') ,user.assignment)
 

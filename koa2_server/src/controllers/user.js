@@ -3,7 +3,7 @@ const userModel = require('../models/user')
 const roleModel = require('../models/role')
 const { Success, Exception } = require('../util/res_model')
 const getToken  = require('../util/token')
-
+const { options } = require('../config')
 
 class User {
   constructor () {}
@@ -106,13 +106,19 @@ class User {
           throw new Exception({ message: '密码错误!' })
         }
         const token = getToken(hasRegister.username, hasRegister._id)
-        ctx.body = new Success({ data: token })
+        ctx.cookies.set('token', token, options)
+        ctx.body = new Success({})
       }else {
         throw new Exception({ message: `用户名${username},尚未注册!` })
       }
     }catch (e) {
       throw new Exception({ message: e.message || '出现错误' })
     }
+  }
+
+  async logout (ctx) {
+    ctx.cookies.set('token', '', options)
+    ctx.body = new Success({})
   }
 
   async assignment (ctx) {
@@ -151,12 +157,13 @@ class User {
     }
   }
   async authorization (ctx) {
-    const { username, _id }  = ctx.auth || {}
-    if(!username || !_id){
+    const { name, _id }  = ctx.auth || {}
+    if(!name || !_id){
       throw new Exception({ message: '请先登录' })
     }else {
-      const token = getToken(username, _id)
-      ctx.body = new Success({ data: token })
+      const token = getToken(name, _id)
+      ctx.cookies.set('token', token, options)
+      ctx.body = new Success({ data: { name } })
     }
   }
 }

@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const { security: { key }} = require('../config')
+const { security: { key },  options} = require('../config')
 const userModel = require('../models/user')
 const roleModel = require('../models/role')
 const authCodeModel = require('../models/authCode')
@@ -11,11 +11,10 @@ class Auth {
   // 验证是否已经登录
   check () {
     return async (ctx, next) => {
-      const authorization = ctx.headers['authorization'] || ''
-      const token = authorization.split(' ')[1]
+      const token = ctx.cookies.get('token')
       if(token)  {
         try {
-          let decode = jwt.verify(token, key )
+          let decode = jwt.verify(token, key)
           ctx.auth = {
             name: decode.name,
             _id: decode._id

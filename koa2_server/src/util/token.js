@@ -5,10 +5,10 @@ const { security: {
   key
 }} = require('../config')
 
-const getToken = (name, role) => {
+const getToken = (name, _id) => {
   return jwt.sign({
     name,
-    role
+    _id
   },key, {
     expiresIn
   })

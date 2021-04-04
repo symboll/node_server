@@ -13,6 +13,16 @@ module.exports = {
   },
   security: {
     key: 'Symbol',
-    expiresIn: 60* 60
+    expiresIn: 60* 60      // 单位秒  
+  },
+  options: {
+    maxAge: 60* 60 * 1000,  // 单位毫秒  
+    // signed: "",
+    // expires:"",
+    path: "/",
+    // domain: "",
+    // secure: "",
+    httpOnly: true,
+    // overwrite: true
   }
 }

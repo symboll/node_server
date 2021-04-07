@@ -17,6 +17,7 @@ class Auth {
           let decode = jwt.verify(token, key)
           ctx.auth = {
             name: decode.name,
+            avatar: decode.avatar,
             _id: decode._id
           }
           await next()

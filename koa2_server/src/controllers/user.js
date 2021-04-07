@@ -105,7 +105,8 @@ class User {
         if(!res){
           throw new Exception({ message: '密码错误!' })
         }
-        const token = getToken(hasRegister.username, hasRegister._id)
+        const { username, avatar='', _id } = hasRegister
+        const token = getToken(username, avatar, _id)
         ctx.cookies.set('token', token, options)
         ctx.body = new Success({})
       }else {
@@ -139,7 +140,7 @@ class User {
   }
   async update (ctx) {
     const { body } = ctx.request
-    const id = ctx.params.id
+    const id = ctx.auth._id || ''
     if(Object.keys(body) === 0) {
       throw new Exception({ message: '缺失更新参数!' })
     } 
@@ -157,13 +158,19 @@ class User {
     }
   }
   async authorization (ctx) {
-    const { name, _id }  = ctx.auth || {}
-    if(!name || !_id){
+    const { _id: id }  = ctx.auth || {}
+    if(!id){
       throw new Exception({ message: '请先登录' })
     }else {
-      const token = getToken(name, _id)
-      ctx.cookies.set('token', token, options)
-      ctx.body = new Success({ data: { name } })
+      try {
+        const user = await userModel.findById(id)
+        const { username, avatar='' } = user
+        const token = getToken(username, avatar, id)
+        ctx.cookies.set('token', token, options)
+        ctx.body = new Success({ data: { name:username, avatar } })
+      }catch (e) {
+        throw new Exception({ message: '验证失败!' + e.message })
+      }
     }
   }
 }

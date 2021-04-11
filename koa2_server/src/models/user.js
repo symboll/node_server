@@ -25,7 +25,9 @@ const schema = Schema({
       type: Schema.Types.ObjectId,
       ref: "Role"
     }]
-  }
+  },
+  city: { type: String },
+  sex: { type: String, enum: ['male', 'female'] }
 }, { timestamps: true })
  
 module.exports = model('User', schema)

@@ -62,7 +62,7 @@ class User {
       const fuzzy = {}
       if(and.length) fuzzy['$and'] = and
 
-      console.log('fuzzy--->', JSON.stringify(fuzzy))
+      console.log('fuzzy--->', fuzzy)
       try {
         res.total = await userModel.countDocuments(fuzzy)
         if(res.total) {
@@ -77,6 +77,15 @@ class User {
       } catch (e) {
         throw new Exception({ message: '查询失败' + e.message })
       }
+    }
+  }
+  async detail (ctx) {
+    const { id } = ctx.params
+    try {
+      const res = await userModel.findById(id)
+      ctx.body = new Success({ data: res })
+    }catch(e) {
+      throw new Exception({ message: e.message ? e.message : e })
     }
   }
   async register (ctx) {
@@ -106,7 +115,7 @@ class User {
           throw new Exception({ message: '密码错误!' })
         }
         const { username, avatar='', _id } = hasRegister
-        const token = getToken(username, avatar, _id)
+        const token = getToken(username, avatar,  _id)
         ctx.cookies.set('token', token, options)
         ctx.body = new Success({})
       }else {
@@ -164,10 +173,10 @@ class User {
     }else {
       try {
         const user = await userModel.findById(id)
-        const { username, avatar='' } = user
+        const { username, avatar=''} = user
         const token = getToken(username, avatar, id)
         ctx.cookies.set('token', token, options)
-        ctx.body = new Success({ data: { name:username, avatar } })
+        ctx.body = new Success({ data: { name:username, avatar, id } })
       }catch (e) {
         throw new Exception({ message: '验证失败!' + e.message })
       }

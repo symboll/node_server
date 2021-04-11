@@ -9,6 +9,9 @@ const auth = new Auth()
 // 用户列表
 router.get('/', user.list)
 
+// 用户详情
+router.get('/info/:id', user.detail)
+
 // 注册
 router.post('/register', user.register)
 
@@ -26,6 +29,8 @@ router.post('/update', auth.check(), user.update)
 
 // 获取用户信息 [产生新的 token ]
 router.get('/authorization', auth.check(), user.authorization)
+
+
 
 module.exports = router
 

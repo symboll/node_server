@@ -4,7 +4,7 @@ const roleModel = require('../models/role')
 const { Success, Exception } = require('../util/res_model')
 const getToken  = require('../util/token')
 const { options } = require('../config')
-
+const aux = require('./util')
 class User {
   constructor () {}
 
@@ -19,13 +19,15 @@ class User {
             .select('-password')                 // 剔除密码
             .limit(10)                           // 没有查询条件，最多查询10条
             .sort({ createdAt: 'desc' })      
-          // for(let k of users) {
-          //   if( k.role && k.role.length !== 0) {
-          //     k.role = await roleModel.find({ _id: { $in: k.role } })
-          //   } 
-          // }
+          
+          for(let k of users) {
+            if( k.role && k.role.length !== 0) {
+              k.role = await aux.getRole(k.role)              
+            } 
+          }
           res.users = users
         }
+        
         ctx.body = new Success({ data: res })
       }catch (e) {
         throw new Exception({ message: '查询失败' + e.message })
@@ -66,12 +68,18 @@ class User {
       try {
         res.total = await userModel.countDocuments(fuzzy)
         if(res.total) {
-          const result = await userModel.find(fuzzy)
+          const users = await userModel.find(fuzzy)
             .select('-password')
             .skip((pageNo - 1) * (parseInt(pageSize)|| 10))
             .limit(parseInt(pageSize)|| 10)
             .sort({ createdAt: 'desc' })
-          res.users = result
+          
+          for(let k of users) {
+            if( k.role && k.role.length !== 0) {
+              k.role = await aux.getRole(k.role)              
+            } 
+          }
+          res.users = users
         }
         ctx.body = new Success({ data: res })
       } catch (e) {

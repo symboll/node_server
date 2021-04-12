@@ -1,6 +1,6 @@
 const roleModel = require('../models/role')
 const { Success, Exception } = require('../util/res_model')
-
+const aux = require('./util')
 class Role {
 
   async list(ctx) { 
@@ -10,9 +10,16 @@ class Role {
       try {
         res.total = await roleModel.countDocuments()
         if(res.total) {
-          res.roles = await roleModel.find()
+          let roles = await roleModel.find()
             // .limit(10)
             .sort({ createdAt: 'desc' })
+            
+          for(let key of roles) {
+            if(key.auth && key.auth.length > 0){
+              key.auth= await aux.getAuthCode(key.auth)
+            }
+          }
+          res.roles = roles
         }
         ctx.body = new Success({ data: res })
       }catch (e) {
@@ -54,11 +61,17 @@ class Role {
       try {
         res.total = await roleModel.countDocuments(fuzzy)
         if(res.total) {
-          const result = await roleModel.find(fuzzy)
+          const roles = await roleModel.find(fuzzy)
             .skip((pageNo - 1) * (parseInt(pageSize)|| 10))
             .limit(parseInt(pageSize)|| 10)
             .sort({ createdAt: 'desc' })
-          res.roles = result
+
+          for(let key of roles) {
+            if(key.auth && key.auth.length > 0){
+              key.auth= await aux.getAuthCode(key.auth)
+            }
+          }
+          res.roles = roles
         }
         ctx.body = new Success({ data: res })
       }catch (e) {

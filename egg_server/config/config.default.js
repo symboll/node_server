@@ -12,21 +12,29 @@ module.exports = appInfo => {
    **/
   const config = exports = {};
 
+  config.security = {
+    csrf: {
+      enable: false
+    }
+  }
+
   // use for cookie sign key, should change to your own and keep security
-  config.keys = appInfo.name + '_1605441008245_6862';
+  config.keys = appInfo.name + '_1624951166916_1319';
 
   // add your middleware config here
-  config.middleware = [];
+  config.middleware = [
+    'errorHandler'
+  ];
 
-  config.mysql = {
-    client: {
-      host: '127.0.0.1',
-      port: 3306,
-      user: 'root',
-      password: '08928214lkh',
-      database: 'basic',
-    },
-  };
+  config.mongoose = {
+    url: "mongodb://127.0.0.1:27017/melon",
+    options: {
+      useCreateIndex: true,
+      useNewUrlParser: true, 
+      useUnifiedTopology: true,
+      useFindAndModify: false
+    }
+  }
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',

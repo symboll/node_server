@@ -108,6 +108,7 @@
         "/Users/likanghua/code/node_pro/egg_server/node_modules/_egg-view@2.1.3@egg-view/config/locales",
         "/Users/likanghua/code/node_pro/egg_server/node_modules/_egg-mongoose@3.3.1@egg-mongoose/config/locales",
         "/Users/likanghua/code/node_pro/egg_server/node_modules/_egg-validate@2.0.2@egg-validate/config/locales",
+        "/Users/likanghua/code/node_pro/egg_server/node_modules/_egg-cors@2.2.3@egg-cors/config/locales",
         "/Users/likanghua/code/node_pro/egg_server/node_modules/_egg@2.29.4@egg/config/locales",
         "/Users/likanghua/code/node_pro/egg_server/config/locales"
       ],
@@ -206,6 +207,11 @@
       }
     },
     "validate": {},
+    "cors": {
+      "origin": "*",
+      "credentials": true,
+      "allowMethods": "GET,HEAD,PUT,POST,DELETE,PATCH"
+    },
     "env": "local",
     "name": "egg_server",
     "keys": "<String len: 29>",
@@ -226,6 +232,7 @@
       },
       "dependencies": {
         "egg": "^2.15.1",
+        "egg-cors": "^2.2.3",
         "egg-mongoose": "^3.3.1",
         "egg-scripts": "^2.11.0",
         "egg-validate": "^2.0.2"
@@ -341,6 +348,7 @@
       "logging": false
     },
     "coreMiddleware": [
+      "cors",
       "meta",
       "siteFile",
       "notfound",
@@ -553,6 +561,17 @@
       "from": "/Users/likanghua/code/node_pro/egg_server/config/plugin.js",
       "path": "/Users/likanghua/code/node_pro/egg_server/node_modules/_egg-validate@2.0.2@egg-validate",
       "version": "2.0.2"
+    },
+    "cors": {
+      "enable": true,
+      "package": "egg-cors",
+      "name": "cors",
+      "dependencies": [],
+      "optionalDependencies": [],
+      "env": [],
+      "from": "/Users/likanghua/code/node_pro/egg_server/config/plugin.js",
+      "path": "/Users/likanghua/code/node_pro/egg_server/node_modules/_egg-cors@2.2.3@egg-cors",
+      "version": "2.2.3"
     }
   }
 }

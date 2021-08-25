@@ -69,6 +69,11 @@
     "app": "/Users/likanghua/code/node_pro/egg_server/node_modules/_egg-mongoose@3.3.1@egg-mongoose/config/config.default.js",
     "agent": "/Users/likanghua/code/node_pro/egg_server/node_modules/_egg-mongoose@3.3.1@egg-mongoose/config/config.default.js"
   },
+  "cors": {
+    "origin": "/Users/likanghua/code/node_pro/egg_server/config/config.default.js",
+    "credentials": "/Users/likanghua/code/node_pro/egg_server/config/config.default.js",
+    "allowMethods": "/Users/likanghua/code/node_pro/egg_server/config/config.default.js"
+  },
   "session": {
     "maxAge": "/Users/likanghua/code/node_pro/egg_server/node_modules/_egg-session@3.3.0@egg-session/config/config.default.js",
     "key": "/Users/likanghua/code/node_pro/egg_server/node_modules/_egg-session@3.3.0@egg-session/config/config.default.js",
@@ -183,6 +188,7 @@
     },
     "dependencies": {
       "egg": "/Users/likanghua/code/node_pro/egg_server/node_modules/_egg@2.29.4@egg/config/config.default.js",
+      "egg-cors": "/Users/likanghua/code/node_pro/egg_server/node_modules/_egg@2.29.4@egg/config/config.default.js",
       "egg-mongoose": "/Users/likanghua/code/node_pro/egg_server/node_modules/_egg@2.29.4@egg/config/config.default.js",
       "egg-scripts": "/Users/likanghua/code/node_pro/egg_server/node_modules/_egg@2.29.4@egg/config/config.default.js",
       "egg-validate": "/Users/likanghua/code/node_pro/egg_server/node_modules/_egg@2.29.4@egg/config/config.default.js"

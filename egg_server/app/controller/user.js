@@ -22,7 +22,6 @@ class UserController extends Controller {
   }
   async index () {
     const { ctx, service } = this
-    ctx.validate(this.UserCreateRule)
     const res = await service.user.index()
     ctx.helper.success({ res })
   }
@@ -33,6 +32,7 @@ class UserController extends Controller {
   }
   async create () {
     const { ctx, service } = this
+    ctx.validate(this.UserCreateRule)
     await service.user.create(ctx.request.body)
     ctx.helper.success({ msg: "创建成功" })
   }

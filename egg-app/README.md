@@ -1,4 +1,4 @@
-# egg_server
+# egg-app
 
 
 
